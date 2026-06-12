@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Card Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- LOBBY -->
+    <div id="screen-lobby" class="screen active">
+        <div class="lobby-container">
+            <div class="logo-wrap">
+                <div class="logo-icon">♠</div>
+                <h1 class="logo-title">Card Game By Rv</h1>
+                <p class="logo-sub">Kartu strategi multiplayer · 2–4 pemain</p>
+            </div>
+            <div class="lobby-card">
+                <div class="input-group">
+                    <label>Nama Pemain</label>
+                    <input type="text" id="input-name" placeholder="Masukkan nama..." maxlength="12">
+                </div>
+                
+                <div class="btn-row">
+                    <button id="btn-create" class="btn btn-primary w-full"><span class="btn-icon">⊕</span> Buat Room</button>
+                    <button id="btn-join-toggle" class="btn btn-secondary w-full"><span class="btn-icon">⊞</span> Gabung Room</button>
+                </div>
+                <div id="join-section" class="join-section hidden">
+                    <div class="input-group">
+                        <label>Kode Room</label>
+                        <input type="text" id="input-room-code" placeholder="Contoh: A1B2C3" maxlength="6" style="text-transform:uppercase;">
+                    </div>
+                    <button id="btn-join-confirm" class="btn btn-accent w-full">Masuk Room</button>
+                </div>
+                <div id="lobby-error" class="error-msg hidden"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WAITING ROOM -->
+    <div id="screen-waiting" class="screen">
+        <div class="waiting-container">
+            <div class="room-header">
+                <div>
+                    <div class="room-code-label">Kode Room</div>
+                    <div class="room-code-display" id="display-room-code">------</div>
+                </div>
+                <button id="btn-copy-code" class="btn btn-ghost btn-sm">⎘ Salin</button>
+            </div>
+            <!-- Game selector — hanya host yang bisa ubah, render via JS -->
+            <div id="game-selector-wrap"></div>
+            <div id="seats-grid" class="seats-grid"></div>
+            <div class="waiting-actions">
+                <button id="btn-ready" class="btn btn-primary">Siap!</button>
+                <button id="btn-start-host" class="btn btn-accent hidden">▶ Mulai Sekarang</button>
+                <button id="btn-leave" class="btn btn-ghost">Keluar</button>
+            </div>
+            <div id="waiting-status" class="waiting-status">Menunggu pemain bergabung…</div>
+        </div>
+    </div>
+
+    <!-- DEAL ANIMATION -->
+    <div id="deal-overlay" class="deal-overlay hidden">
+        <div id="deal-deck" class="deal-deck"></div>
+        <div id="deal-text" class="deal-text">Mengocok kartu…</div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="screen-game" class="screen">
+        <!-- BARU: Canvas dinamis untuk UI game spesifik -->
+        <div id="game-canvas" class="game-canvas"></div>
+        
+        <!-- Tombol Keluar Universal -->
+        <button id="btn-leave-game" class="btn btn-ghost btn-sm" style="position:absolute; top:10px; left:10px; z-index:100;">← Keluar</button>
+    </div>
+
+    <!-- RANKING -->
+    <div id="screen-ranking" class="screen">
+        <div class="ranking-container">
+            <h2 class="ranking-title">🏆 Hasil Akhir</h2>
+            <div id="ranking-list" class="ranking-list"></div>
+            <button id="btn-back-lobby" class="btn btn-primary w-full">🔄 Main Lagi / Kembali ke Lobby</button>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- CHAT SYSTEM (tersedia di waiting room & game screen) -->
+    <div id="chat-widget" class="chat-widget hidden">
+        <!-- Panel pesan -->
+        <div id="chat-panel" class="chat-panel hidden">
+            <div class="chat-header">
+                <span class="chat-header-title">💬 Obrolan Room</span>
+                <button id="chat-close" class="chat-close-btn" aria-label="Tutup chat">✕</button>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input-row">
+                <input type="text" id="chat-input" class="chat-input" placeholder="Ketik pesan…" maxlength="120" autocomplete="off">
+                <button id="chat-send" class="chat-send-btn" aria-label="Kirim">➤</button>
+            </div>
+        </div>
+        <!-- Tombol toggle bubble -->
+        <button id="chat-toggle" class="chat-toggle-btn" aria-label="Buka chat">
+            💬
+            <span id="chat-badge" class="chat-badge hidden">0</span>
+        </button>
+    </div>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- 1. CORE SYSTEM (Wajib dimuat pertama) -->
+    <script src="core.js"></script>
+
+    <!-- 2. GAME MODULES (Bisa ditambah tanpa batas) -->
+    <script src="jendral.js"></script>
+    <script src="remi.js"></script>
+</body>
+</html>
